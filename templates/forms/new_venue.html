@@ -1,5 +1,6 @@
-{% extends 'layouts/main.html' %} {% block title %}New Venue{% endblock %} {%
-block content %}
+{% extends 'layouts/main.html' %} {% block title %}New Venue{% endblock %}
+{%block content %}
+
 <div class="form-wrapper">
   <form method="post" class="form">
     <h3 class="form-heading">
@@ -39,6 +40,11 @@ block content %}
       <small>Ctrl+Click to select multiple</small>
       {{ form.genres(class_ = 'form-control', placeholder='Genres, separated by
       commas', autofocus = true) }}
+    </div>
+    <div class="form-group">
+      <label for="image_link">Image Link</label>
+      {{ form.image_link(class_ = 'form-control', placeholder='http://',
+      autofocus = true) }}
     </div>
     <div class="form-group">
       <label for="facebook_link">Facebook Link</label>
