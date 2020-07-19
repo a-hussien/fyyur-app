@@ -38,9 +38,13 @@
 			<i class="fas fa-moon"></i> Not currently seeking performance venues
 		</p>
 		{% endif %}
+		<div class="actions pull-right">
+			<a href="/artists/{{artist.id}}/edit" class="btn btn-primary btn-sm">Edit</a>
+			<button id="delete_artist" class="btn btn-danger btn-sm" data-id="{{ artist.id }}">Delete</button>
+		</div>
 	</div>
 	<div class="col-sm-6">
-		<img src="{{ artist.image_link }}" alt="Venue Image" />
+		<img src="{{ artist.image_link }}" alt="Artist Image" />
 	</div>
 </div>
 <section>
