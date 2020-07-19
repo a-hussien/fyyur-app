@@ -52,21 +52,9 @@ block content %}
       <i class="fas fa-moon"></i> Not currently seeking talent
     </p>
     {% endif %}
-    <div class="actions">
-      <button
-        id="edit_venue"
-        class="btn btn-primary btn-sm"
-        data-id="{{ venue.id }}"
-      >
-        Edit
-      </button>
-      <button
-        id="delete_venue"
-        class="btn btn-danger btn-sm"
-        data-id="{{ venue.id }}"
-      >
-        Delete
-      </button>
+    <div class="actions pull-right">
+      <a href="/venues/{{venue.id}}/edit" data-id="{{venue.id}}" class="btn btn-primary btn-sm">Edit</a>
+      <button type="button" id="delete_venue" class="btn btn-danger btn-sm" data-id="{{ venue.id }}">Delete</button>
     </div>
   </div>
   <div class="col-sm-6">
