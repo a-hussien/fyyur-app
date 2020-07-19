@@ -50,8 +50,6 @@ class Artist(db.Model):
         return f'<Artist id: {self.id}, name: {self.name}>'
 
 # Venue Model
-
-
 class Venue(db.Model):
     __tablename__ = 'venues'
 
@@ -73,8 +71,6 @@ class Venue(db.Model):
         return f'<Venue id: {self.id}, name: {self.name}>'
 
 # Show Model
-
-
 class Show(db.Model):
     __tablename__ = 'shows'
 
@@ -605,6 +601,24 @@ def create_artist_submission():
     return render_template('pages/home.html')
 
 
+@app.route('/artists/<int:artist_id>/delete', methods=['DELETE'])
+def delete_artist(artist_id):
+    
+    try:
+        artist = Artist.query.get(artist_id)
+        artist_name = artist.name
+        db.session.delete(artist)
+        db.session.commit()
+        flash('Artist ' + artist_name +
+            ' has been removed successfully', 'success')
+    except:
+        flash('Sorry! Something went wrong, Venue ' + artist_name + ' Could not be removed', 'danger')
+        db.session.rollback()
+    finally:
+        db.session.close()
+    return jsonify({'success': True})
+
+
 #  Shows
 #  ----------------------------------------------------------------
 
@@ -684,6 +698,32 @@ def create_show_submission():
     # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
     return render_template('pages/home.html')
 
+
+@app.route('/shows/search', methods=['POST'])
+def search_shows():
+    # Search shows by venue or artist name
+
+    # Define Variables
+    search_term = request.form.get('search_term', '')
+    venues = Venue.query.filter(Venue.name.ilike(f'%{search_term}%')).all()
+    if len(venues) > 0:
+        for venue in venues:
+            search_result = Show.query.filter_by(venue_id=venue.id).all()
+    else:
+        artists = Artist.query.filter(Artist.name.ilike(f'%{search_term}%')).all()
+        if len(artists) > 0:
+            for artist in artists:
+                search_result = Show.query.filter_by(artist_id=artist.id).all()
+        else:
+            search_result = ''
+
+    response = {
+        'count': len(search_result),
+        'data': search_result,
+    }
+
+    return render_template('pages/show.html', results=response, search_term=search_term)
+    
 #----------------------------------------------------------------------------#
 # Handle Error Pages.
 #----------------------------------------------------------------------------#

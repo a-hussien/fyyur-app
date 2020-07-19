@@ -4,29 +4,27 @@ window.parseISOString = function parseISOString(s) {
 };
 
 $(document).ready(function () {
-  $("#seeking_venue, #seeking_talent").on("change", function(e){
+  
+  // trigger delete action for both venue and artist
+  $(document).on('click', '#delete_venue, #delete_artist', function(e){
     e.preventDefault();
-    if ($(this).prop("checked", true)) {
-      $(this).attr("value") == true;
-    } else {
-      $(this).attr("value") == false;
-    }
-  });
-  $(document).on('click', '#delete_venue', function(e){
-    e.preventDefault();
-    let venue_id = $(this).data('id'),
-        url = '/venues/' + venue_id + '/delete';
-    if(confirm("Are You Sure ?")){
-      $.ajax({
-        url: url,
-        method: 'DELETE',
-        success: function(data){
-          // window.location.href = '/venues';
-        },
-        error: function(err){
-          console.log(err);
-        }
-      });
-    }
+    
+    let action = $(this).data('action'),
+        id = $(this).data('id'),
+        url = `/${action}/${id}/delete`;
+  
+       if(confirm("Are You Sure ?")){
+        $.ajax({
+          url: url,
+          method: 'DELETE',
+          success: function(data){
+            window.location.href = `/${action}`;
+          },
+          error: function(err){
+            console.log(err);
+          }
+        });
+      }
+
   });
 });
